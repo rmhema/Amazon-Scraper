@@ -9,7 +9,7 @@ def scrape(url):
     headers = {
         'dnt': '1',
         'upgrade-insecure-requests': '1',
-        'user-agent': 'your_user_agent',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36f',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'sec-fetch-site': 'same-origin',
         'sec-fetch-mode': 'navigate',
@@ -35,6 +35,7 @@ def scrape(url):
 
 with open("search_urls.txt", 'r') as urllist, open('search_output.json', 'w') as outfile:
     f = open('product_urls.txt', 'w')
+    list_details = []
     for url in urllist.read().splitlines():
         data = scrape(url)
 
@@ -44,10 +45,8 @@ with open("search_urls.txt", 'r') as urllist, open('search_output.json', 'w') as
                     product['url'] = 'https://www.amazon.com' + product['url']
                     f.write(product['url'])
                     f.write('\n')
-
-                    json.dump(product, outfile)
-                    outfile.write(", \n")
-
+                    list_details.append(product)
             except:
                 continue
+    json.dump(list_details, outfile)
     f.close()
